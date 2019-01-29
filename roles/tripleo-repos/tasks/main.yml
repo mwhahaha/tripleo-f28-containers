@@ -1,0 +1,31 @@
+---
+- name: check if delorean is configured
+  stat:
+    path: /etc/yum.repos.d/delorean.repo
+  register: delorean_file
+
+- block:
+  # only do this for initial bootstrap, after this tripleo-repos manages
+  # this file.
+  - name: get current-tripleo repo
+    get_url:
+      url: "{{ tripleo_repos_repo_file_url[tripleo_repos_python] }}"
+      dest: /etc/yum.repos.d/delorean.repo
+    become: true
+
+  - name: install tripleo-repos
+    package:
+      name: "{{ tripleo_repos_package_name[tripleo_repos_python] }}"
+      state: installed
+    become: true
+
+  - name: remove current-tripleo-repo
+    file:
+      path: /etc/yum.repos.d/delorean.repo
+      state: absent
+    become: true
+  when: not delorean_file.stat.exists
+
+- name: run tripleo-repos
+  shell: tripleo-repos -d {{ tripleo_repos_distro }}  -b {{ tripleo_repos_branch }} {{ tripleo_repos_version }}
+  become: true

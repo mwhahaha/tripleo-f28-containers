@@ -1,0 +1,41 @@
+---
+
+build_python_version: python3
+build_work_dir: "{{ ansible_user_dir }}/containers"
+
+# defaults file for f28-container-build
+kolla_work_dir: "{{ ansible_user_dir }}/kolla"
+# https://review.openstack.org/#/c/624838/
+kolla_f28_ref: refs/changes/38/624838/21
+
+tripleo_common_work_dir: "{{ ansible_user_dir }}/tripleo-common"
+# https://review.openstack.org/#/c/629679/
+tripleo_common_f28_ref: refs/changes/79/629679/14
+
+virtenv_work_dir: "{{ ansible_user_dir }}/containers-venv"
+
+container_tag: latest
+container_registry: 192.168.24.2:8787
+container_namespace: master
+
+python_pip_package_name:
+  python2:
+    - python-pip
+  python3:
+    - python3-pip
+
+python_venv_package_name:
+  python2:
+    - python-virtualenv
+  python3:
+    - python3-virtualenv
+
+python_venv_command:
+  python2: virtualenv
+  python3: virtualenv-3
+
+tripleoclient_package_name:
+  python2:
+    - python-tripleoclient
+  python3:
+    - python3-tripleoclient

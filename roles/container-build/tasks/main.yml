@@ -1,0 +1,77 @@
+---
+# tasks file for f28-container-build
+- name: ensure kolla work dir exists
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ build_work_dir }}"
+    - "{{ kolla_work_dir }}"
+    - "{{ tripleo_common_work_dir }}"
+    - "{{ virtenv_work_dir }}"
+
+- name: install package deps
+  package:
+    name: "{{ item }}"
+    state: installed
+  become: true
+  with_items:
+    - git
+    - "{{ python_pip_package_name[build_python_version] }}"
+    - "{{ tripleoclient_package_name[build_python_version] }}"
+
+- name: clone kolla
+  git:
+    repo: https://git.openstack.org/openstack/kolla
+    dest: "{{ kolla_work_dir }}"
+    version: master
+
+- name: fetch fedora kolla patch(es)
+  shell: |
+    git fetch https://git.openstack.org/openstack/kolla {{ kolla_f28_ref }} && git checkout FETCH_HEAD
+  args:
+    chdir: "{{ kolla_work_dir }}"
+
+- name: clone tripleo-common
+  git:
+    repo: https://git.openstack.org/openstack/tripleo-common
+    dest: "{{ tripleo_common_work_dir }}"
+    version: master
+
+- name: "fetch fedora tripleo-common patch(es)"
+  shell: |
+    git fetch https://git.openstack.org/openstack/tripleo-common {{ tripleo_common_f28_ref }} && git checkout FETCH_HEAD
+  args:
+    chdir: "{{ tripleo_common_work_dir }}"
+
+- name: ensure virtualenv installed
+  package:
+    name: "{{ python_venv_package_name[build_python_version] }}"
+    state: present
+  become: true
+
+- name: pip install kolla
+  pip:
+    name: "{{ kolla_work_dir }}"
+    virtualenv: "{{ virtenv_work_dir }}"
+    virtualenv_command: "{{ python_venv_command[build_python_version] }}"
+    virtualenv_python: "{{ build_python_version }}"
+
+- name: write out kolla-build.conf
+  template:
+    src: templates/kolla-build.conf.j2
+    dest: "{{ build_work_dir }}/kolla-build.conf"
+
+- name: build containers
+  shell: |
+    source {{ virtenv_work_dir }}/bin/activate
+    openstack overcloud container image build \
+      --config-file {{ tripleo_common_work_dir }}/container-images/overcloud_containers.yaml \
+      --kolla-config-file {{ build_work_dir }}/kolla-build.conf \
+      --exclude fluentd \
+      --exclude skydive-agent \
+      --exclude skydive-analyzer \
+      --exclude sensu-client \
+      --exclude sensu-base
+  args:
+    chdir: "{{ build_work_dir }}"

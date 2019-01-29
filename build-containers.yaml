@@ -1,0 +1,24 @@
+---
+- hosts: node
+  vars:
+    container_registry: 127.0.0.1:8787
+    container_registry_host: 127.0.0.1
+    container_registry_port: 8787
+    container_registry_docker_options: '--log-driver=journald --signature-verification=false --iptables=true --live-restore'
+    container_registry_insecure_regiestries:
+      - 127.0.0.1:8787
+    container_registry_deployment_user: "{{ ansible_ssh_user }}"
+    ansible_python_version: python3
+  tasks:
+    - name: setup repos
+      import_role:
+        name: tripleo-repos
+
+    - name: configure docker/container registry
+      import_role:
+        name: container-registry
+
+    - name: build containers
+      import_role:
+        name: container-build
+

@@ -1,0 +1,15 @@
+---
+# defaults file for tripleo-repos
+tripleo_repos_python: python3
+tripleo_repos_branch: master
+tripleo_repos_version: current
+tripleo_repos_distro: fedora
+tripleo_repos_repo_file_url:
+  python2:  https://trunk.rdoproject.org/centos7-master/current/delorean.repo
+  python3:  https://trunk.rdoproject.org/fedora/current/delorean.repo
+tripleo_repos_package_name:
+  python2:
+    - python2-tripleo-repos
+  python3:
+    - python3-tripleo-repos
+
