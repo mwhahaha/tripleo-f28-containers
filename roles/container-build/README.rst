@@ -57,6 +57,8 @@ virtualenv, pip, git, tripleoclient
 Example Playbook
 ----------------
 
+.. code-block::
+
     - hosts: servers
       roles:
          - { role: container-build }
