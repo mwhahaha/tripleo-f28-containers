@@ -5,5 +5,5 @@ namespace={{ container_namespace }}
 registry={{ container_registry }}
 tag={{ container_tag }}
 template_override={{ tripleo_common_work_dir }}/container-images/tripleo_kolla_template_overrides.j2
-rpm_setup_config=http://trunk.rdoproject.org/fedora/current/delorean.repo,http://trunk.rdoproject.org/fedora/delorean-deps.repo
-push=True
+rpm_setup_config={{ kolla_rpm_repos | join(',') }}
+push={{ container_push }}
