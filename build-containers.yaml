@@ -9,7 +9,7 @@
       - 127.0.0.1:8787
     container_registry_deployment_user: "{{ ansible_ssh_user }}"
     ansible_python_version: python3
-  prompt_vars:
+  vars_prompt:
     - name: container_tag
       prompt: Container tag to build
       default: latest
