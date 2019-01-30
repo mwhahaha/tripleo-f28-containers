@@ -13,6 +13,7 @@
     - name: container_tag
       prompt: Container tag to build
       default: latest
+      private: no
   tasks:
     - name: setup repos
       import_role:
