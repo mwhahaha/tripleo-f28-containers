@@ -10,6 +10,12 @@
     - name: push_src_tag
       prompt: Source container tag
       default: latest
+    - name: push_dest_registry
+      prompt: Destination registry
+      default: docker.io
+    - name: push_dest_namespace
+      prompt: Destination namespace
+      default: mwhahaha
     - name: push_dest_tag
       prompt: Destination container tag
       default: latest
