@@ -1,0 +1,35 @@
+# this task list gets called with a list of images (src_repo) so we flatten
+# the list and loop through it async to tag/push the containers. We have to use
+# a shell because docker_image doesn't seem to work with this looping and we
+# need to munge the urls.
+- name: push container
+  shell: |
+    CONTAINER="{{ async_repo.split('/')[-1].split(':')[0] | default('') }}"
+    if [ -z "${CONTAINER}" ]; then
+      exit 0
+    fi
+    SRC="{{ async_repo }}"
+    DEST="{{ dest_registry }}/{{ dest_namespace }}/${CONTAINER}:{{ dest_tag }}"
+    if [[ "${SRC}" == *"{{ src_registry }}/{{ src_namespace }}"* ]]; then
+      docker tag $SRC $DEST
+      docker push $DEST
+    fi
+  args:
+    executable: /bin/bash
+  async: 300
+  poll: 0
+  loop: "{{ src_repo | flatten(levels=1) }}"
+  loop_control:
+    loop_var: "async_repo"
+  register: async_results
+
+# FIXME: this ignores errors
+- name: Check sync status
+  async_status:
+    jid: "{{ async_result_item.ansible_job_id }}"
+  loop: "{{ async_results.results }}"
+  loop_control:
+    loop_var: "async_result_item"
+  register: async_poll_results
+  until: async_poll_results.finished
+  retries: 30

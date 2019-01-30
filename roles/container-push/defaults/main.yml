@@ -1,0 +1,8 @@
+---
+# defaults file for container-push
+push_src_registry: 127.0.0.1:8787
+push_src_namespace: master
+push_src_tag: latest
+push_dest_registry: docker.io
+push_dest_namespace: mwhahaha
+push_dest_tag: latest

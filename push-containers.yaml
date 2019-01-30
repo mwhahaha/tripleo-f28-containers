@@ -1,0 +1,20 @@
+---
+- hosts: node
+  vars_prompt:
+    - name: docker_username
+      prompt: Dockerhub username?
+      private: no
+    - name: docker_password
+      prompt: Dockerhub password?
+      private: yes
+    - name: push_src_tag
+      prompt: Source container tag
+      default: latest
+    - name: push_dest_tag
+      prompt: Destination container tag
+      default: latest
+  tasks:
+    - name: push containers
+      import_role:
+        name: container-push
+
