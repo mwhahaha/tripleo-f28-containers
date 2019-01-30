@@ -16,6 +16,7 @@
     state: installed
   become: true
   with_items:
+    - "{{ python_libselinux_package_name[build_python_version] }}"
     - git
     - "{{ python_pip_package_name[build_python_version] }}"
     - "{{ tripleoclient_package_name[build_python_version] }}"
