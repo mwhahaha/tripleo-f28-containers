@@ -5,7 +5,7 @@
     container_registry_host: 127.0.0.1
     container_registry_port: 8787
     container_registry_docker_options: '--log-driver=journald --signature-verification=false --iptables=true --live-restore'
-    container_registry_insecure_regiestries:
+    container_registry_insecure_registries:
       - 127.0.0.1:8787
     container_registry_deployment_user: "{{ ansible_ssh_user }}"
     ansible_python_version: python3
