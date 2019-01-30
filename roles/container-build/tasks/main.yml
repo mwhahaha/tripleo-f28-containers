@@ -32,7 +32,9 @@
     git fetch https://git.openstack.org/openstack/kolla {{ kolla_f28_ref }} && git checkout FETCH_HEAD
   args:
     chdir: "{{ kolla_work_dir }}"
-  when: kolla_f28_ref is defined
+  when:
+    - kolla_f28_ref is defined
+    - kolla_f28_ref != ""
 
 - name: clone tripleo-common
   git:
@@ -45,7 +47,9 @@
     git fetch https://git.openstack.org/openstack/tripleo-common {{ tripleo_common_f28_ref }} && git checkout FETCH_HEAD
   args:
     chdir: "{{ tripleo_common_work_dir }}"
-  when: tripleo_common_f28_ref is defined
+  when:
+    - tripleo_common_f28_ref is defined
+    - tripleo_common_f28_ref != ""
 
 - name: ensure virtualenv installed
   package:
