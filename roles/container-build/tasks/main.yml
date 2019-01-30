@@ -79,6 +79,6 @@
       --exclude skydive-agent \
       --exclude skydive-analyzer \
       --exclude sensu-client \
-      --exclude sensu-base | tee {{ build_work_dir }}/build.log
+      --exclude sensu-base  2>&1 | tee {{ build_work_dir }}/build.log
   args:
     chdir: "{{ build_work_dir }}"
