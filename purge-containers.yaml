@@ -1,0 +1,23 @@
+---
+- hosts: node
+  vars_prompt:
+    - name: purge_containers
+      prompt: Do you want to delete *all* the containers from the host? (True|False)
+      default: no
+      private: no
+  tasks:
+    - name: check input
+      fail:
+        msg: You must answer yes to purge all the containers
+      when: not purge_containers|bool
+    - name: get container information
+      docker_image_facts:
+      register: images
+    - name: delete container
+      docker_image:
+        name: "{{ item }}"
+        state: absent
+        force: true
+      loop: "{{ images | json_query('images[*].RepoTags') | flatten(levels=1)}}"
+
+
