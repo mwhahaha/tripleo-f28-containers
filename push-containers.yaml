@@ -10,15 +10,19 @@
     - name: push_src_tag
       prompt: Source container tag
       default: latest
+      private: no
     - name: push_dest_registry
       prompt: Destination registry
       default: docker.io
+      private: no
     - name: push_dest_namespace
       prompt: Destination namespace
       default: mwhahaha
+      private: no
     - name: push_dest_tag
       prompt: Destination container tag
       default: latest
+      private: no
   tasks:
     - name: push containers
       import_role:
