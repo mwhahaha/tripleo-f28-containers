@@ -13,5 +13,6 @@
     include: push.yml src_repo="{{ item }}" src_registry="{{ push_src_registry }}" src_namespace="{{ push_src_namespace }}" src_tag="{{ push_src_tag }}" dest_registry="{{ push_dest_registry }}" dest_namespace="{{ push_dest_namespace }}" dest_tag="{{ push_dest_tag }}"
   loop: "{{ images | json_query('images[*].RepoTags') | batch(5) | list }}"
 
-
-
+- name: logout from dockerhub
+  docker_login:
+    state: absent
