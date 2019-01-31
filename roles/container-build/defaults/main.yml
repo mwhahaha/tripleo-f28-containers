@@ -23,6 +23,12 @@ container_registry: 127.0.0.1:8787
 container_namespace: master
 container_push: True
 
+python_docker_package_name:
+  python2:
+    - python-docker
+  python3:
+    - python3-docker
+
 python_libselinux_package_name:
   python2:
     - python-libselinux
