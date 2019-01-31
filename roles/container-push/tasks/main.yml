@@ -3,6 +3,7 @@
 - name: login to dockerhub
   docker_login:
     username: "{{ docker_username }}"
+    email: "{{ docker_email }}"
     password: "{{ docker_password }}"
 
 - name: get container information

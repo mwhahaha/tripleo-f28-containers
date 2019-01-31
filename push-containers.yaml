@@ -4,6 +4,9 @@
     - name: docker_username
       prompt: Dockerhub username?
       private: no
+    - name: docker_email
+      prompt: Dockerhub email?
+      private: no
     - name: docker_password
       prompt: Dockerhub password?
       private: yes
