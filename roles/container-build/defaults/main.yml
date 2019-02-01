@@ -6,7 +6,7 @@ build_work_dir: "{{ ansible_user_dir }}/containers"
 # kolla settings
 kolla_work_dir: "{{ ansible_user_dir }}/kolla"
 # https://review.openstack.org/#/c/624838/
-kolla_f28_ref: refs/changes/38/624838/21
+kolla_f28_ref: refs/changes/38/624838/23
 
 kolla_rpm_repos:
   - http://trunk.rdoproject.org/fedora/current/delorean.repo
